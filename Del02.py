@@ -13,19 +13,10 @@ import random
 x = 250 #where the black circle is located
 y = 250 #where the black circle is located
 
-#
-##xMin = 100.0
-##xMax = 0.0
-##yMin = 100.0
-##yMax = 0.0
 xMin = -150
 xMax = 150
 yMin = -150
 yMax = 150
-##xMin = -1000
-##xMax = 1000
-##yMin = -1000
-##yMax = 1000
 
 #create an instance of the class called PYGAME_WINDOW
 instance = PYGAME_WINDOW()
@@ -54,30 +45,6 @@ def Handle_Frame(frame):
     for finger in fingers:
         Handle_Finger(finger)
     
-##    
-##    #search specifically for index finger
-##    indexFingerList = fingers.finger_type(1)
-####    i = int(0)
-####    for i in indexFingerList:
-####        indexFingerList = fingers.finger_type(i)
-##    #only one index finger per hand so grab the first in the list
-##    indexFinger = indexFingerList[0]
-##    #print(indexFinger)
-##
-##    #specific bone analysis through leap
-##    distalPhalanx = indexFinger.bone(3)
-##    #print(distalPhalanx)
-##
-##    #get the positions of the base and the tip of the bone
-##    distalPhalanx = indexFinger.bone(3)
-##    tip = distalPhalanx.next_joint
-##    global x
-##    x = tip[0]
-##    x = int(x)
-##    global y
-##    y = tip[1]
-##    y = int(y)
-##
     #make the screen be in the middle of where the leap device is looking??
     global xMin, xMax, yMin, yMax
     if ( x < xMin ):
@@ -144,14 +111,4 @@ while True:
         x = 0
     if (int(x) > 0):
         Handle_Frame(frame)
-##    pygameX = Scale(x, xMin, xMax, constants_instance2.pygameXMin, constants_instance2.pygameWindowWidth)
-##    #print pygameX
-##    #pygameY = Scale(y, yMin, yMax, constants_instance2.pygameYMin, constants_instance2.pygameWindowDepth)
-##    pygameY = Scale(y, yMin, yMax, constants_instance2.pygameWindowDepth, constants_instance2.pygameYMin)
-##    #print pygameY
-##        
-##    
-##    #create the circle that follows your hand
-##    instance.Draw_Black_Circle(pygameX,pygameY)
-##    #Perturb_Circle_Position()
     instance.Reveal()
