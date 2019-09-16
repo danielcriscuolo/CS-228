@@ -30,7 +30,4 @@ class PYGAME_WINDOW:
     def Draw_Black_Line(self, base, tip, width):
         #pygame.draw.line(self.screen, (0,0,0), base, tip)
         pygame.draw.line(self.screen, (0,0,0), base, tip, width)
-##        b = 0
-##        for b in range(0,4):
-##            pygame.draw.line(self.screen, (0,0,0), base, tip, b)
         

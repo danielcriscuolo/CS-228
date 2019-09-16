@@ -75,7 +75,7 @@ def Handle_Bone(bone,bone_num):
     
 
     
-
+# take in a list of an x,y, and z value, use x and z to form the hand, scale them to the screen.
 def Handle_Vector_From_Leap(v):
     x = (v[0])
     scaled_x = Scale(x, xMin, xMax, constants_instance2.pygameXMin, constants_instance2.pygameWindowWidth)
