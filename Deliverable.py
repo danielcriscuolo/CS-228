@@ -1,3 +1,4 @@
+import numpy as np
 import sys
 sys.path.insert(0, "..")
 import Leap
@@ -6,7 +7,7 @@ import random
 from constants import CONSTANTS
 #create an instance variable for the class constances
 constants_instance2 = CONSTANTS()
-from pygameWindow import PYGAME_WINDOW
+from pygameWindow_Del03 import PYGAME_WINDOW
 instance = PYGAME_WINDOW()
 class DELIVERABLE:
     def __init__(self):
@@ -18,6 +19,9 @@ class DELIVERABLE:
         self.xMax = 150
         self.yMin = -150
         self.yMax = 150
+        self.currentNumberOfHands = 0
+        self.previousNumberOfHands = 0
+        self.gestureData = np.zeros((5,4,6),dtype='f')
 
     def Handle_Frame(self, frame):
         hand = frame.hands[0]
@@ -35,6 +39,9 @@ class DELIVERABLE:
             self.yMin = self.y
         if ( self.y > self.yMax ):
             self.yMax = self.y
+        
+        if self.Recording_Is_Ending() == True:
+            print(self.gestureData[0,3,3:6])
 
     #takes in one finger and sets it up to recognize the bone cooridinates
     def Handle_Finger(self, finger):
@@ -44,6 +51,8 @@ class DELIVERABLE:
 
     #takes in one bone at a time an gets the cooridinates
     def Handle_Bone(self, bone,bone_num):
+        i = [0,1,2,3,4]
+        j = [0,1,2,3]
         #get and save x,y coordinates for each base and tip of each bone
         base = bone.prev_joint
         base_coordinate_list = self.Handle_Vector_From_Leap(base)
@@ -51,7 +60,17 @@ class DELIVERABLE:
         tip_coordinate_list = self.Handle_Vector_From_Leap(tip)
 
         #call the draw black line function
-        instance.Draw_Black_Line(base_coordinate_list,tip_coordinate_list,((bone_num-3)*(-1)) +2)
+        if (self.currentNumberOfHands == 2):
+            instance.Draw_Line((255,0,0),base_coordinate_list,tip_coordinate_list,((bone_num-3)*(-1)) +2)
+        else:
+            instance.Draw_Line((40,210,150),base_coordinate_list,tip_coordinate_list,((bone_num-3)*(-1)) +2)
+
+        self.gestureData[i,j,0] = (x coordinate of the base of bone j in finger i)
+        self.gestureData[i,j,1] = (y coordinate of the base of bone j in finger i)
+        self.gestureData[i,j,2] = (z coordinate of the base of bone j in finger i)
+        self.gestureData[i,j,3] = (x coordinate of the tip of bone j in finger i)
+        self.gestureData[i,j,4] = (y coordinate of the tip of bone j in finger i)
+        self.gestureData[i,j,5] = (z coordinate of the tip of bone j in finger i)
 
     # take in a list of an x,y, and z value, use x and z to form the hand, scale them to the screen.
     def Handle_Vector_From_Leap(self, v):
@@ -77,6 +96,7 @@ class DELIVERABLE:
         while True:
             instance.Prepare()
             frame = controller.frame()
+            self.currentNumberOfHands = len(frame.hands)
             #Process hands...
             if not frame.hands.is_empty:
                 x = 1
@@ -85,6 +105,7 @@ class DELIVERABLE:
             if (int(x) > 0):
                 self.Handle_Frame(frame)
             self.Run_Once()
+            self.previousNumberOfHands = self.currentNumberOfHands
             instance.Reveal()
     def Run_Once(self):
         instance.Prepare()
@@ -97,3 +118,18 @@ class DELIVERABLE:
         if (int(x) > 0):
             self.Handle_Frame(frame)
         instance.Reveal()
+
+    def Recording_Is_Ending(self):
+        if (self.currentNumberOfHands == 1 and self.previousNumberOfHands == 2):
+            return True
+        else:
+            return False
+
+
+
+
+
+
+
+
+
