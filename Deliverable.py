@@ -1,5 +1,6 @@
 import numpy as np
 import sys
+import pickle
 sys.path.insert(0, "..")
 import Leap
 controller = Leap.Controller()
@@ -42,6 +43,7 @@ class DELIVERABLE:
             
         if self.Recording_Is_Ending() == True:
             print(self.gestureData)
+            self.Save_Gesture()
 
     #takes in one finger and sets it up to recognize the bone cooridinates
     def Handle_Finger(self, finger):
@@ -127,7 +129,11 @@ class DELIVERABLE:
             return True
         else:
             return False
-
+        
+    def Save_Gesture(self):
+        pickle_out = open("userData/gesture.p","wb")
+        pickle.dump(self.gestureData, pickle_out)
+        pickle_out.close()
 
 
 
