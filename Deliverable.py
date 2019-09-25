@@ -23,6 +23,7 @@ class DELIVERABLE:
         self.currentNumberOfHands = 0
         self.previousNumberOfHands = 0
         self.gestureData = np.zeros((5,4,6),dtype='f')
+        self.count = 0
 
     def Handle_Frame(self, frame):
         hand = frame.hands[0]
@@ -44,6 +45,7 @@ class DELIVERABLE:
         if self.Recording_Is_Ending() == True:
             print(self.gestureData)
             self.Save_Gesture()
+            self.count +=1 
 
     #takes in one finger and sets it up to recognize the bone cooridinates
     def Handle_Finger(self, finger):
@@ -131,7 +133,7 @@ class DELIVERABLE:
             return False
         
     def Save_Gesture(self):
-        pickle_out = open("userData/gesture.p","wb")
+        pickle_out = open("userData/gesture"+str(self.count)+".p","wb")
         pickle.dump(self.gestureData, pickle_out)
         pickle_out.close()
 
