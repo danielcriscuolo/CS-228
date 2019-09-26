@@ -1,6 +1,7 @@
 import numpy as np
 import sys
 import pickle
+import os
 sys.path.insert(0, "..")
 import Leap
 controller = Leap.Controller()
@@ -24,6 +25,7 @@ class DELIVERABLE:
         self.previousNumberOfHands = 0
         self.gestureData = np.zeros((5,4,6),dtype='f')
         self.count = 0
+        self.Delete_And_Recreate_Gesture_Directory()
 
     def Handle_Frame(self, frame):
         hand = frame.hands[0]
@@ -136,6 +138,11 @@ class DELIVERABLE:
         pickle_out = open("userData/gesture"+str(self.count)+".p","wb")
         pickle.dump(self.gestureData, pickle_out)
         pickle_out.close()
+        
+    def Delete_And_Recreate_Gesture_Directory(self):
+        dir = '/Users/danielcriscuolo/Desktop/CS228-master/LeapDeveloperKit_2.3.1+31549_mac/LeapSDK/lib/CS-228/userData'
+        os.system("rm -R " +dir)
+        os.system("mkdir " +dir)
 
 
 
